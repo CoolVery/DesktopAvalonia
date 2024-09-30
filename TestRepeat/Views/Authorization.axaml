@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TestRepeat.Views.Authorization"
+			 xmlns:vm="using:TestRepeat.ViewModels"
+			 x:DataType="vm:AuthorizationViewModel">
+	<StackPanel>
+		<TextBlock 
+			Text="Логин"/>
+		<TextBox
+			Text="{Binding Login}"
+			Watermark="Логин"/>
+		<TextBlock
+			Text="Пароль"/>
+		<TextBox
+			Text="{Binding Password}"
+			Watermark="Пароль"
+			PasswordChar="*"/>
+		<Button
+			Command="{Binding SignIn}"
+			Content="Войти"/>
+	</StackPanel>
+</UserControl>

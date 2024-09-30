@@ -14,6 +14,7 @@ namespace TestRepeat.ViewModels
 	{
 		[ObservableProperty] string login;
         [ObservableProperty] string password;
+        [ObservableProperty] bool wrongSignIn;
 
 		public void SignIn() {
             _41pKyklevContext _41PKyklevContext = new _41pKyklevContext();
@@ -21,11 +22,16 @@ namespace TestRepeat.ViewModels
             if (user != null) {
                 switch (user.IdRole) {
                     case 1:
-                        MainWindowViewModel.Instance.Uc = new InfoUsersDate();
                         break;
                     case 2:
+                        MainWindowViewModel.Instance.Uc = new InfoUsersDate(_41PKyklevContext.Users.Include(x => x.IdUserNavigation.IdRoleNavigation).ToList<User>());
+
                         break;
                 }
+            }
+            else
+            {
+                WrongSignIn = true;
             }
 
         }

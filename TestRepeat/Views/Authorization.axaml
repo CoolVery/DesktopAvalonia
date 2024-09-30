@@ -21,5 +21,9 @@
 		<Button
 			Command="{Binding SignIn}"
 			Content="Войти"/>
+		<TextBlock
+			Text="Неверный логин или пароль"
+			IsVisible="{Binding WrongSignIn}"
+			Foreground="Red"/>
 	</StackPanel>
 </UserControl>

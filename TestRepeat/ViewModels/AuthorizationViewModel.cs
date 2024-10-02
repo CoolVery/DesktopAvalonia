@@ -17,15 +17,14 @@ namespace TestRepeat.ViewModels
         [ObservableProperty] bool wrongSignIn;
 
 		public void SignIn() {
-            _41pKyklevContext _41PKyklevContext = new _41pKyklevContext();
-            Logined user = _41PKyklevContext.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == Password);
+            Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == Password);
             if (user != null) {
                 switch (user.IdRole) {
                     case 1:
+                        MainWindowViewModel.Instance.Uc = new DateUser(user);
                         break;
                     case 2:
-                        MainWindowViewModel.Instance.Uc = new InfoUsersDate(_41PKyklevContext.Users.Include(x => x.IdUserNavigation.IdRoleNavigation).ToList<User>());
-
+                        MainWindowViewModel.Instance.Uc = new InfoUsersDate(MainWindowViewModel.Db_context.Users.Include(x => x.IdGenderNavigation).ToList());
                         break;
                 }
             }

@@ -1,6 +1,8 @@
 ﻿using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
+using TestRepeat.Models;
 using TestRepeat.Views;
+using TestRepeat.Models;
 
 namespace TestRepeat.ViewModels
 {
@@ -8,9 +10,11 @@ namespace TestRepeat.ViewModels
     {
         [ObservableProperty] UserControl uc = new Authorization();
         public static MainWindowViewModel Instance;
+        public static _41pKyklevContext Db_context;
         public MainWindowViewModel()
         {
-            Instance = this; // Задайте ссылку на себя
+            Instance = this;
+            Db_context = new _41pKyklevContext();
         }
     }
 }

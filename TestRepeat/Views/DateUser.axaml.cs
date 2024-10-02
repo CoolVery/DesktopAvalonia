@@ -1,21 +1,20 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using System.Collections.Generic;
 using TestRepeat.Models;
 using TestRepeat.ViewModels;
 
 namespace TestRepeat.Views;
 
-public partial class InfoUsersDate : UserControl
+public partial class DateUser : UserControl
 {
-    public InfoUsersDate()
+    public DateUser()
     {
         InitializeComponent();
     }
-    public InfoUsersDate(List<User> listUsers)
+    public DateUser(Logined user)
     {
         InitializeComponent();
-        DataContext = new InfoUsersDateViewModel(listUsers);
+        DataContext = new DateUserViewModel(user);
     }
 }

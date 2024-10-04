@@ -10,7 +10,9 @@
 		<TextBox
 			Text="{Binding CurrentUser.User.Name}"/>
 		<TextBox
-			Text="{Binding CurrentUser.User.BirthDate}"/>
+			Text="{Binding DateString}"/>
+		<DatePicker
+			SelectedDate="{Binding NewDate}"/>
 		<ComboBox
 			ItemsSource="{Binding Genders}"
 			SelectedItem="{Binding CurrentUser.User.IdGenderNavigation}">
@@ -23,6 +25,8 @@
 		<Button
 			Content="Сохранить изменения"
 			Command="{Binding SaveChange}"/>
-		
+		<Button
+			Content="На начальный экран"
+			Command="{Binding BackToAuth}"/>
 	</StackPanel>
 </UserControl>

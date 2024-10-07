@@ -49,6 +49,13 @@
 						<TextBlock Text="{Binding BirthDate, StringFormat=Дата рождения: {0: dd/MM/yyyy}}"/>
 						<TextBlock Text="{Binding IdGenderNavigation.Gender1}"/>
 						<TextBlock Text="{Binding IdUserNavigation.IdRoleNavigation.RoleName}"/>
+						<Button Command="{Binding $parent[UserControl].((vm:InfoUsersDateViewModel)DataContext).ChangeUserDate}" 
+								Content="Изменить данные пользователя"
+								CommandParameter="{Binding IdUser}"/>
+						<Button Command="{Binding $parent[UserControl].((vm:InfoUsersDateViewModel)DataContext).DeleteUser}"
+								Content="Удалить пользователя"
+								CommandParameter="{Binding IdUser}"
+								IsVisible="{Binding CanDelete}"/>
 					</StackPanel>
 				</DataTemplate>
 			</ListBox.ItemTemplate>

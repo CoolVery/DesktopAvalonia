@@ -12,9 +12,14 @@ public partial class DateUser : UserControl
     {
         InitializeComponent();
     }
-    public DateUser(Logined user)
+    public DateUser(User user)
     {
         InitializeComponent();
         DataContext = new DateUserViewModel(user);
+    }
+    public DateUser(User cuurentUser,User changeableUser)
+    {
+        InitializeComponent();
+        DataContext = new DateUserViewModel(cuurentUser, changeableUser);
     }
 }

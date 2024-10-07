@@ -21,10 +21,13 @@ namespace TestRepeat.ViewModels
             if (user != null) {
                 switch (user.IdRole) {
                     case 1:
-                        MainWindowViewModel.Instance.Uc = new DateUser(user);
+                        MainWindowViewModel.Instance.Uc = new DateUser(user.User);
                         break;
                     case 2:
-                        MainWindowViewModel.Instance.Uc = new InfoUsersDate(MainWindowViewModel.Db_context.Users.Include(x => x.IdGenderNavigation).ToList());
+                        MainWindowViewModel.Instance.Uc = new InfoUsersDate(user.User, MainWindowViewModel.Db_context.Users
+                            .Include(x => x.IdGenderNavigation)
+                            .Include(x => x.IdUserNavigation.IdRoleNavigation)
+                            .ToList());
                         break;
                 }
             }

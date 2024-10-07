@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TestRepeat.Models;
+using TestRepeat.Views;
 
 namespace TestRepeat.ViewModels
 {
@@ -12,13 +13,23 @@ namespace TestRepeat.ViewModels
 		[ObservableProperty] List<Gender> listGenders;
 		[ObservableProperty] string textFolderContent;
 		[ObservableProperty] Gender selectedGender;
-		List<User> copyUsers;
+		User currentUser;
+
+        List<User> copyUsers;
 		public InfoUsersDateViewModel() { }
 
-		public InfoUsersDateViewModel(List<User> users)
+		public InfoUsersDateViewModel(User currentUser, List<User> users)
 		{
+			this.currentUser = currentUser;
 			this.listUsers = users;
-			copyUsers = users;
+            foreach (var user in users)
+            {
+                if (user.IdUser == currentUser.IdUser)
+				{
+					user.CanDelete = false;
+				}
+            }
+            copyUsers = users;
 			listGenders = [
 				new Gender() { Gender1 = "—бросить фильтр", IdGender = 0 },
 				.. users.Select(gender => gender.IdGenderNavigation).Distinct().OrderBy(gender => gender.IdGender).ToList()
@@ -45,5 +56,21 @@ namespace TestRepeat.ViewModels
             if (!string.IsNullOrEmpty(textFolderContent)) ListUsers = ListUsers.Where(user => user.Name.Contains(textFolderContent)).ToList();
 			if(selectedGender != null && selectedGender.IdGender != 0) ListUsers = ListUsers.Where(user => user.IdGenderNavigation == selectedGender).ToList();
 		}
-	}
+		public void ChangeUserDate(int idUser)
+		{
+			User changeableUser = MainWindowViewModel.Db_context.Users.FirstOrDefault(user => user.IdUser == idUser);
+            MainWindowViewModel.Instance.Uc = new DateUser(currentUser, changeableUser);
+        }
+		public void DeleteUser(int idUser) {
+			MainWindowViewModel.Db_context
+				.Remove(
+					MainWindowViewModel.Db_context.Users.FirstOrDefault(u => u.IdUser == idUser));
+			MainWindowViewModel.Db_context
+				.Remove(
+					MainWindowViewModel.Db_context.Logineds.FirstOrDefault(l => l.Id == idUser));
+            MainWindowViewModel.Db_context.SaveChanges();
+			MainWindowViewModel.Instance.Uc = new InfoUsersDate(currentUser, MainWindowViewModel.Db_context.Users.ToList());
+		}
+
+    }
 }

@@ -10,32 +10,50 @@ namespace TestRepeat.ViewModels
 {
 	public partial class DateUserViewModel : ViewModelBase
 	{
-		[ObservableProperty] Logined currentUser;
-		[ObservableProperty] string dateString;
+		[ObservableProperty] User userForPage;
+        [ObservableProperty] string dateString;
 		[ObservableProperty] List<Gender> genders;
-		public DateUserViewModel() { }
-		public DateUserViewModel(Logined user) {
-			currentUser = user;
+		[ObservableProperty] bool isAdmin = false;
+        User currentUser;
+        public DateUserViewModel() { }
+		public DateUserViewModel(User user) {
+            userForPage = user;
 			genders = MainWindowViewModel.Db_context.Genders.ToList();
-			dateString = currentUser.User.BirthDate.ToString();
-
+			dateString = userForPage.BirthDate.ToString();
+			if (user.IdUserNavigation.IdRole == 2)
+			{
+				isAdmin = true;
+			}
         }
-
-		public void SaveChange()
+        public DateUserViewModel(User cuurentUser, User changeableUser) {
+            currentUser = cuurentUser;
+            userForPage = changeableUser;
+            genders = MainWindowViewModel.Db_context.Genders.ToList();
+            dateString = userForPage.BirthDate.ToString();
+            if (cuurentUser.IdUserNavigation.IdRole == 2)
+            {
+                isAdmin = true;
+            }
+        }
+        public void SaveChange()
 		{
 			MainWindowViewModel.Db_context.SaveChanges();
 		}
 		public DateTimeOffset NewDate { 
-			get => new DateTimeOffset((DateTime)CurrentUser.User.BirthDate, TimeSpan.Zero);
+			get => new DateTimeOffset((DateTime)UserForPage.BirthDate, TimeSpan.Zero);
 			set
 			{
-				CurrentUser.User.BirthDate = new DateTime(value.Year, value.Month, value.Day);
+                UserForPage.BirthDate = new DateTime(value.Year, value.Month, value.Day);
                 DateString = value.ToString();
             }
 		}
 		public void BackToAuth()
 		{
 			MainWindowViewModel.Instance.Uc = new Authorization();
+		}
+		public void BackToListUser()
+		{
+			MainWindowViewModel.Instance.Uc = new InfoUsersDate(currentUser, MainWindowViewModel.Db_context.Users.ToList());
 		}
     }
 }

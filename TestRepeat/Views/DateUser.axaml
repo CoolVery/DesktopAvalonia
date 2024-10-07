@@ -8,14 +8,14 @@
              x:Class="TestRepeat.Views.DateUser">
 	<StackPanel>
 		<TextBox
-			Text="{Binding CurrentUser.User.Name}"/>
+			Text="{Binding UserForPage.Name}"/>
 		<TextBox
 			Text="{Binding DateString}"/>
 		<DatePicker
 			SelectedDate="{Binding NewDate}"/>
 		<ComboBox
 			ItemsSource="{Binding Genders}"
-			SelectedItem="{Binding CurrentUser.User.IdGenderNavigation}">
+			SelectedItem="{Binding UserForPage.IdGenderNavigation}">
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Gender1}"/>
@@ -28,5 +28,9 @@
 		<Button
 			Content="На начальный экран"
 			Command="{Binding BackToAuth}"/>
+		<Button
+			IsVisible="{Binding IsAdmin}"
+			Content="На список пользователей"
+			Command="{Binding BackToListUser}"/>
 	</StackPanel>
 </UserControl>

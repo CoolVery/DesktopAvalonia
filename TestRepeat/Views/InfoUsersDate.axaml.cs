@@ -13,9 +13,9 @@ public partial class InfoUsersDate : UserControl
     {
         InitializeComponent();
     }
-    public InfoUsersDate(List<User> listUsers)
+    public InfoUsersDate(User currentUser, List<User> listUsers)
     {
         InitializeComponent();
-        DataContext = new InfoUsersDateViewModel(listUsers);
+        DataContext = new InfoUsersDateViewModel(currentUser, listUsers);
     }
 }

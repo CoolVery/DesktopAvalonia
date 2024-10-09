@@ -17,5 +17,4 @@ public partial class User
 
     public virtual Logined IdUserNavigation { get; set; } = null!;
 
-    public bool CanDelete { get; set; } = true;
 }

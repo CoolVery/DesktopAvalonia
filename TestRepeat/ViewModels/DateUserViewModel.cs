@@ -55,5 +55,6 @@ namespace TestRepeat.ViewModels
 		{
 			MainWindowViewModel.Instance.Uc = new InfoUsersDate(currentUser, MainWindowViewModel.Db_context.Users.ToList());
 		}
+		
     }
 }

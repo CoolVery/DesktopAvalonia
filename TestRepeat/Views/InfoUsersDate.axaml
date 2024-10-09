@@ -38,6 +38,9 @@
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
+			<Button
+				Content="Создать пользователя"
+				Command="{Binding AddNewUser}"/>
 		</StackPanel>
 		<ListBox
 			Grid.Row="1"
@@ -55,7 +58,7 @@
 						<Button Command="{Binding $parent[UserControl].((vm:InfoUsersDateViewModel)DataContext).DeleteUser}"
 								Content="Удалить пользователя"
 								CommandParameter="{Binding IdUser}"
-								IsVisible="{Binding CanDelete}"/>
+							/>
 					</StackPanel>
 				</DataTemplate>
 			</ListBox.ItemTemplate>

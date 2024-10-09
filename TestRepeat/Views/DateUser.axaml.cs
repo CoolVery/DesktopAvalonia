@@ -11,6 +11,7 @@ public partial class DateUser : UserControl
     public DateUser()
     {
         InitializeComponent();
+        DataContext = new DateUserViewModel();
     }
     public DateUser(User user)
     {

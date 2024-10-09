@@ -9,13 +9,20 @@ namespace TestRepeat.Views;
 
 public partial class InfoUsersDate : UserControl
 {
+    public static User CurrentUser { get; set; }
     public InfoUsersDate()
     {
         InitializeComponent();
     }
+    public InfoUsersDate( List<User> listUsers)
+    {
+        InitializeComponent();
+        DataContext = new InfoUsersDateViewModel(listUsers);
+    }
     public InfoUsersDate(User currentUser, List<User> listUsers)
     {
         InitializeComponent();
-        DataContext = new InfoUsersDateViewModel(currentUser, listUsers);
+        CurrentUser = currentUser;
+        DataContext = new InfoUsersDateViewModel(listUsers);
     }
 }

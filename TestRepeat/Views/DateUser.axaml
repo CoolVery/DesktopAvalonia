@@ -23,7 +23,7 @@
 			</ComboBox.ItemTemplate>
 		</ComboBox>
 		<Button
-			Content="Сохранить изменения"
+			Content="Сохранить данные"
 			Command="{Binding SaveChange}"/>
 		<Button
 			Content="На начальный экран"

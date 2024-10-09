@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:vm="using:TestRepeat.ViewModels"
+			 x:DataType="vm:NewUserViewModel"
+             x:Class="TestRepeat.Views.NewUser">
+	<StackPanel>
+		<TextBlock
+			Text="Логин"/>
+		<TextBox
+			Text="{Binding NewLogin.Login}"/>
+		<TextBlock
+			Text="Пароль"/>
+		<TextBox
+			Text="{Binding NewLogin.Password}"/>
+		<TextBlock
+			Text="Имя"/>
+		<TextBox
+			Text="{Binding NewUser.Name}"/>
+		<TextBlock
+			Text="Дата рождения"/>
+		<DatePicker
+			SelectedDate="{Binding BirthDateNewUser}"/>
+		<TextBlock
+			Text="Пол"/>
+		<ComboBox
+			ItemsSource="{Binding ListGender}"
+			SelectedItem="{Binding NewUser.IdGenderNavigation}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock
+						Text="{Binding Gender1}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+		<TextBlock
+			Text="Роль"/>
+		<ComboBox
+			ItemsSource="{Binding ListRole}"
+			SelectedItem="{Binding NewLogin.IdRoleNavigation}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock
+						Text="{Binding RoleName}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+		<Button
+			Content="Создать пользователя"
+			Command="{Binding CreateNewUserAndLogin}"/>
+		<TextBlock
+			Text="Пользователь создан и сохранен в базе данных"
+			Foreground="Green"
+			IsVisible="{Binding IsUserCreated}"/>
+		<Button
+			Content="На страницу пользователей"
+			Command="{Binding BackToListUser}"/>
+		
+		<Button
+			Content="Выйти из системы"
+			Command="{Binding BackToAuth}"/>
+		<!--<TextBox
+			Text="{Binding UserForPage.Name}"/>
+		<TextBox
+			Text="{Binding DateString}"/>
+		<DatePicker
+			SelectedDate="{Binding NewDate}"/>
+		<ComboBox
+			ItemsSource="{Binding Genders}"
+			SelectedItem="{Binding UserForPage.IdGenderNavigation}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Gender1}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+		<Button
+			Content="Сохранить данные"
+			Command="{Binding SaveChange}"/>
+		<Button
+			Content="На начальный экран"
+			Command="{Binding BackToAuth}"/>
+		<Button
+			IsVisible="{Binding IsAdmin}"
+			Content="На список пользователей"
+			Command="{Binding BackToListUser}"/> -->
+		</StackPanel>
+	</UserControl>

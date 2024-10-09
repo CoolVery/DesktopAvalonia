@@ -58,6 +58,7 @@
 						<Button Command="{Binding $parent[UserControl].((vm:InfoUsersDateViewModel)DataContext).DeleteUser}"
 								Content="Удалить пользователя"
 								CommandParameter="{Binding IdUser}"
+								IsVisible="{Binding IsCanseled}"
 							/>
 					</StackPanel>
 				</DataTemplate>

@@ -9,7 +9,7 @@ public partial class Logined
 
     public string Login { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+    public byte[] Password { get; set; } = null!;
 
     public int IdRole { get; set; }
 

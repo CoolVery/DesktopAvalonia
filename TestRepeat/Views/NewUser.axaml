@@ -14,7 +14,7 @@
 		<TextBlock
 			Text="Пароль"/>
 		<TextBox
-			Text="{Binding NewLogin.Password}"/>
+			Text="{Binding PasswordContent}"/>
 		<TextBlock
 			Text="Имя"/>
 		<TextBox
@@ -47,6 +47,13 @@
 				</DataTemplate>
 			</ComboBox.ItemTemplate>
 		</ComboBox>
+		<Image
+			Source="{Binding ImgUser}"
+			Width="150"
+			Height="150"/>
+		<Button
+			Content="Добавить аватар"
+			Command="{Binding AddImgUser}"/>
 		<Button
 			Content="Создать пользователя"
 			Command="{Binding CreateNewUserAndLogin}"/>

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +25,7 @@ public partial class _41pKyklevContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=edu.pg.ngknn.ru;Port=5442;Database=41P_Kyklev;Username=31P;Password=12345");
+        => optionsBuilder.UseNpgsql("Host=edu.pg.ngknn.local;Port=5432;Database=41P_Kyklev;Username=31P;Password=12345");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,9 +54,7 @@ public partial class _41pKyklevContext : DbContext
             entity.Property(e => e.Login)
                 .HasColumnType("character varying")
                 .HasColumnName("login");
-            entity.Property(e => e.Password)
-                .HasColumnType("character varying")
-                .HasColumnName("password");
+            entity.Property(e => e.Password).HasColumnName("password");
 
             entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.Logineds)
                 .HasForeignKey(d => d.IdRole)
@@ -92,6 +89,7 @@ public partial class _41pKyklevContext : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("birth_date");
             entity.Property(e => e.IdGender).HasColumnName("id_gender");
+            entity.Property(e => e.ImgUser).HasColumnName("img_user");
             entity.Property(e => e.Name)
                 .HasColumnType("character varying")
                 .HasColumnName("name");

@@ -1,6 +1,8 @@
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TestRepeat.Models;
 using TestRepeat.Views;
@@ -51,12 +53,13 @@ namespace TestRepeat.ViewModels
                         IdUser = user.IdUser,
                         IdUserNavigation = user.IdUserNavigation,
                         BirthDate = user.BirthDate,
-
+                        ConvertImgUser = new Bitmap(new MemoryStream(user.ImgUser))
                     };
                 if (user.IdUser == InfoUsersDate.CurrentUser.IdUser)
                 {
                     tempUser.IsCanseled = false;
                 }
+                
                 listUsers.Add(tempUser);
             }
             return listUsers;
@@ -72,7 +75,7 @@ namespace TestRepeat.ViewModels
         public void ChangeUserDate(int idUser)
         {
             User changeableUser = MainWindowViewModel.Db_context.Users.FirstOrDefault(user => user.IdUser == idUser);
-            MainWindowViewModel.Instance.Uc = new DateUser(InfoUsersDate.CurrentUser, changeableUser);
+            MainWindowViewModel.Instance.Uc = new DateUser(changeableUser);
         }
         public void DeleteUser(int idUser)
         {

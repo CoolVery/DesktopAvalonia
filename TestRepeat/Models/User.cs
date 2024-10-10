@@ -13,8 +13,9 @@ public partial class User
 
     public int IdGender { get; set; }
 
+    public byte[]? ImgUser { get; set; }
+
     public virtual Gender IdGenderNavigation { get; set; } = null!;
 
     public virtual Logined IdUserNavigation { get; set; } = null!;
-
 }

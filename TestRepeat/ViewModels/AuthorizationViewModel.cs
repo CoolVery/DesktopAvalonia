@@ -1,10 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using TestRepeat.Models;
 using TestRepeat.Views;
 
@@ -16,8 +20,10 @@ namespace TestRepeat.ViewModels
         [ObservableProperty] string password;
         [ObservableProperty] bool wrongSignIn;
 
-		public void SignIn() {
-            Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == Password);
+		public async void SignIn() {
+            
+            
+            Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == MD5.HashData(Encoding.ASCII.GetBytes(Password)));
             if (user != null) {
                 switch (user.IdRole) {
                     case 1:

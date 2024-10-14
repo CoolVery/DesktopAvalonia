@@ -15,6 +15,11 @@ namespace TestRepeat.ViewModels
         {
             Instance = this;
             Db_context = new _41pKyklevContext();
+            Initialize();
+        }
+        private void Initialize()
+        {
+
         }
     }
 }

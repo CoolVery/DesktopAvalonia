@@ -6,13 +6,15 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using TestRepeat.Models;
 using TestRepeat.Views;
 
-namespace TestRepeat.ViewModels
+namespace TestRepeat.ViewModels.AuthorizationViewModel
 {
 	public partial class AuthorizationViewModel : ViewModelBase
 	{
@@ -21,6 +23,9 @@ namespace TestRepeat.ViewModels
         [ObservableProperty] bool wrongSignIn;
 
 		public async void SignIn() {
+
+            
+            AuthorizationVMAdditionalMethods.CreateAndWrite();
 
             
             Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == MD5.HashData(Encoding.ASCII.GetBytes(Password)));

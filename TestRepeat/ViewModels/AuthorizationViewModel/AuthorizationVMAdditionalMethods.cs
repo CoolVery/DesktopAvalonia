@@ -2,44 +2,84 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+
 namespace TestRepeat.ViewModels.AuthorizationViewModel
 {
     public class AuthorizationVMAdditionalMethods
     {
-        public static void CreateAndWrite()
+        public static string[] ReadFile(string fullPath)
         {
-            CreateAndWriteWork();
+            string macAddress = string.Empty;
+            ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = mc.GetInstances();
+
+            foreach (ManagementObject mo in moc)
+            {
+                if ((bool)mo["IPEnabled"])
+                {
+                    macAddress = mo["MacAddress"].ToString();
+                    break;
+                }
+            }
+            string[] allLines = File.ReadAllLines(fullPath);
+            string base64Mac = allLines[0];
+            if (Encoding.UTF8.GetString(Convert.FromBase64String(base64Mac)) == macAddress)
+            {
+                string[] loginAndPassword = new string[2];
+                loginAndPassword[0] = Encoding.UTF8.GetString(Convert.FromBase64String(allLines[1]));
+                loginAndPassword[1] = Encoding.UTF8.GetString(Convert.FromBase64String(allLines[2]));
+
+                return loginAndPassword;
+            }
+            else
+            {
+                return null;
+            }
         }
-        static void CreateAndWriteWork()
+
+        public static void CreateAndWriteWork(string login, string password)
         {
             string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             string path = Directory.GetCurrentDirectory();
-            using SHA256CryptoServiceProvider hash = new SHA256CryptoServiceProvider();
+            using SHA256Managed hash = new SHA256Managed();
             string nameFile = Regex.Replace(Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(userName))), @"[\/:*?""<>|]", "");
             string fullPath = path + "\\" + nameFile + ".txt";
-            File.Create(fullPath);
-            NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
 
-            foreach (NetworkInterface ni in interfaces)
+            string macAddress = string.Empty;
+            ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = mc.GetInstances();
+
+            foreach (ManagementObject mo in moc)
             {
-                if (ni.OperationalStatus ==
-                    OperationalStatus.Up && ni.GetPhysicalAddress().GetAddressBytes().Length != 0)
+                if ((bool)mo["IPEnabled"])
                 {
-                    Console.WriteLine("Название        : {0}", ni.Name);
-                    Console.WriteLine("Описание        : {0}", ni.Description);
-                    Console.WriteLine("MAC-адрес       : {0}", ni.GetPhysicalAddress().ToString());
-                    Console.WriteLine();
+                    macAddress = mo["MacAddress"].ToString();
+                    break;
                 }
             }
-            using (FileStream fs = File.OpenWrite(fullPath)) { 
-                
+
+            using (StreamWriter fs = new StreamWriter(fullPath))
+            {
+                fs.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(macAddress)));
+                fs.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(login)));
+                fs.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(password)));
+
+
             }
+            hash.Dispose();
+            //byte[] line = File.ReadAllBytes(fullPath);
+            //if (hash.ComputeHash(Encoding.UTF8.GetBytes(macAddress)).SequenceEqual(line))
+            //{
+            //    return;
+            //}
         }
     }
 }
+

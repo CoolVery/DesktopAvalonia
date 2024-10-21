@@ -3,6 +3,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using TestRepeat.Models;
 using TestRepeat.Views;
 using TestRepeat.Models;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+using TestRepeat.ViewModels.AuthorizationViewModel;
 
 namespace TestRepeat.ViewModels
 {
@@ -19,7 +25,19 @@ namespace TestRepeat.ViewModels
         }
         private void Initialize()
         {
-
+            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            string path = Directory.GetCurrentDirectory();
+            using SHA256Managed hash = new SHA256Managed();
+            string nameFile = Regex.Replace(Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(userName))), @"[\/:*?""<>|]", "");
+            string fullPath = path + "\\" + nameFile + ".txt";
+            if (File.Exists(fullPath))
+            {
+                string[] loginAndPassword = AuthorizationVMAdditionalMethods.ReadFile(fullPath);
+                if (loginAndPassword != null)
+                {
+                    Uc = new Authorization(loginAndPassword[0], loginAndPassword[1]);
+                }
+            }
         }
     }
 }

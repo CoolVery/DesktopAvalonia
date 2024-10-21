@@ -21,12 +21,17 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
 		[ObservableProperty] string login;
         [ObservableProperty] string password;
         [ObservableProperty] bool wrongSignIn;
+        public AuthorizationViewModel() { }
+        public AuthorizationViewModel(string login, string password) { 
+            this.login = login;
+            this.password = password;
+            SignIn();
+        }
 
-		public async void SignIn() {
+        public async void SignIn() {
 
             
-            AuthorizationVMAdditionalMethods.CreateAndWrite();
-
+            AuthorizationVMAdditionalMethods.CreateAndWriteWork(login, password);
             
             Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == MD5.HashData(Encoding.ASCII.GetBytes(Password)));
             if (user != null) {

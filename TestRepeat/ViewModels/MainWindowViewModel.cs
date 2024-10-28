@@ -30,13 +30,28 @@ namespace TestRepeat.ViewModels
             string path = Directory.GetCurrentDirectory();
             using SHA256Managed hash = new SHA256Managed();
             string nameFile = Regex.Replace(Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(userName))), @"[\/:*?""<>|]", "");
-            string fullPath = path + "\\" + nameFile + ".txt";
+            string fullPath = path + "\\" + nameFile + ".bin";
             if (File.Exists(fullPath))
             {
                 string[] loginAndPassword = AuthorizationVMAdditionalMethods.ReadFile(fullPath);
                 if (loginAndPassword != null)
                 {
                     AuthorizationViewModel.AuthorizationViewModel auth = new AuthorizationViewModel.AuthorizationViewModel(loginAndPassword[0], loginAndPassword[1]);
+                }
+                else
+                {
+                    string[] filePaths = System.IO.Directory.GetFiles(@path, "*.bin");
+                    foreach (string file in filePaths) { 
+                        File.Delete(file);
+                    }
+                }
+            }
+            else
+            {
+                string[] filePaths = System.IO.Directory.GetFiles(@path, "*.bin");
+                foreach (string file in filePaths)
+                {
+                    File.Delete(file);
                 }
             }
         }

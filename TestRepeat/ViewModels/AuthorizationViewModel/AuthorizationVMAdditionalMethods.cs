@@ -28,7 +28,15 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
                     break;
                 }
             }
-            string[] allLines = File.ReadAllLines(fullPath);
+            string[] allLines = new string[3];
+            using (BinaryReader reader = new BinaryReader(File.Open(fullPath, FileMode.Open)))
+            {
+                allLines[0] = reader.ReadString();
+                allLines[1] = reader.ReadString();
+                allLines[2] = reader.ReadString();
+
+            }
+            
             string base64Mac = allLines[0];
             if (Encoding.UTF8.GetString(Convert.FromBase64String(base64Mac)) == macAddress)
             {
@@ -50,7 +58,7 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
             string path = Directory.GetCurrentDirectory();
             using SHA256Managed hash = new SHA256Managed();
             string nameFile = Regex.Replace(Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(userName))), @"[\/:*?""<>|]", "");
-            string fullPath = path + "\\" + nameFile + ".txt";
+            string fullPath = path + "\\" + nameFile + ".bin";
 
             string macAddress = string.Empty;
             ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
@@ -64,14 +72,11 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
                     break;
                 }
             }
-
-            using (StreamWriter fs = new StreamWriter(fullPath))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fullPath, FileMode.Create)))
             {
-                fs.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(macAddress)));
-                fs.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(login)));
-                fs.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(password)));
-
-
+                writer.Write(Convert.ToBase64String(Encoding.UTF8.GetBytes(macAddress)));
+                writer.Write(Convert.ToBase64String(Encoding.UTF8.GetBytes(login)));
+                writer.Write(Convert.ToBase64String(Encoding.UTF8.GetBytes(password)));
             }
             hash.Dispose();
             //byte[] line = File.ReadAllBytes(fullPath);

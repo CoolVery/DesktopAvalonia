@@ -27,12 +27,14 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
             this.password = password;
             SignIn();
         }
+        public void SignInAndWriteFile() {
+            if (SignIn())
+            {
+                AuthorizationVMAdditionalMethods.CreateAndWriteWork(login, password);
 
-        public async void SignIn() {
-
-            
-            AuthorizationVMAdditionalMethods.CreateAndWriteWork(login, password);
-            
+            }
+        }
+        public bool SignIn() {            
             Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == MD5.HashData(Encoding.ASCII.GetBytes(Password)));
             if (user != null) {
                 switch (user.IdRole) {
@@ -46,10 +48,12 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
                             .ToList());
                         break;
                 }
+                return true;
             }
             else
             {
                 WrongSignIn = true;
+                return false;
             }
 
         }

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using TestRepeat.Models;
 using TestRepeat.Views;
 using TestRepeat.Models;
+using TestRepeat.ViewModels;
 using System.Security.Cryptography;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -35,7 +36,7 @@ namespace TestRepeat.ViewModels
                 string[] loginAndPassword = AuthorizationVMAdditionalMethods.ReadFile(fullPath);
                 if (loginAndPassword != null)
                 {
-                    Uc = new Authorization(loginAndPassword[0], loginAndPassword[1]);
+                    AuthorizationViewModel.AuthorizationViewModel auth = new AuthorizationViewModel.AuthorizationViewModel(loginAndPassword[0], loginAndPassword[1]);
                 }
             }
         }

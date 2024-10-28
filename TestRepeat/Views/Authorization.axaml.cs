@@ -15,7 +15,6 @@ public partial class Authorization : UserControl
     }
     public Authorization(string login, string password)
     {
-        InitializeComponent();
         DataContext = new AuthorizationViewModel(login, password);
     }
 }

@@ -19,7 +19,7 @@
 			Watermark="Пароль"
 			PasswordChar="*"/>
 		<Button
-			Command="{Binding SignIn}"
+			Command="{Binding SignInAndWriteFile}"
 			Content="Войти"/>
 		<TextBlock
 			Text="Неверный логин или пароль"

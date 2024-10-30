@@ -54,7 +54,7 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
 
         public static void CreateAndWriteWork(string login, string password)
         {
-            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            string userName = Environment.UserName;
             string path = Directory.GetCurrentDirectory();
             using SHA256Managed hash = new SHA256Managed();
             string nameFile = Regex.Replace(Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(userName))), @"[\/:*?""<>|]", "");

@@ -45,6 +45,7 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
                         MainWindowViewModel.Instance.Uc = new InfoUsersDate(user.User, MainWindowViewModel.Db_context.Users
                             .Include(x => x.IdGenderNavigation)
                             .Include(x => x.IdUserNavigation.IdRoleNavigation)
+                            .Include(x => x.IdThreats)                            
                             .ToList());
                         break;
                 }

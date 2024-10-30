@@ -71,11 +71,26 @@
 							IsVisible="{Binding IsCanseled}"
 							/>
 						</StackPanel>
-						<Image
+						<Grid
+							ColumnDefinitions="*, *"
+							Grid.Column="1"
+							ShowGridLines="True">
+							<ListBox
+								ItemsSource="{Binding IdThreats}">
+								<ListBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock
+											Text="{Binding Name}"/>
+									</DataTemplate>
+								</ListBox.ItemTemplate>
+							</ListBox>
+							<Image
 							Grid.Column="1"
 							Source="{Binding ConvertImgUser}"
 							Width="150"
 							Height="150"/>
+						</Grid>
+
 					</Grid>
 				</DataTemplate>
 			</ListBox.ItemTemplate>

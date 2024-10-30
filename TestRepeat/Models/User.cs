@@ -18,4 +18,6 @@ public partial class User
     public virtual Gender IdGenderNavigation { get; set; } = null!;
 
     public virtual Logined IdUserNavigation { get; set; } = null!;
+
+    public virtual ICollection<Threat> IdThreats { get; set; } = new List<Threat>();
 }

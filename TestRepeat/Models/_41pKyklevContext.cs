@@ -21,6 +21,8 @@ public partial class _41pKyklevContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<Threat> Threats { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -74,6 +76,18 @@ public partial class _41pKyklevContext : DbContext
                 .HasColumnName("role_name");
         });
 
+        modelBuilder.Entity<Threat>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("threats_pk");
+
+            entity.ToTable("threats");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasColumnType("character varying")
+                .HasColumnName("name");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.IdUser).HasName("users_pk");
@@ -102,6 +116,25 @@ public partial class _41pKyklevContext : DbContext
             entity.HasOne(d => d.IdUserNavigation).WithOne(p => p.User)
                 .HasForeignKey<User>(d => d.IdUser)
                 .HasConstraintName("users_logined_fk");
+
+            entity.HasMany(d => d.IdThreats).WithMany(p => p.IdUsers)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UsersThreat",
+                    r => r.HasOne<Threat>().WithMany()
+                        .HasForeignKey("IdThreat")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("users_threats_threats_fk"),
+                    l => l.HasOne<User>().WithMany()
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("users_threats_users_fk"),
+                    j =>
+                    {
+                        j.HasKey("IdUser", "IdThreat").HasName("users_threats_pk");
+                        j.ToTable("users_threats");
+                        j.IndexerProperty<int>("IdUser").HasColumnName("id_user");
+                        j.IndexerProperty<int>("IdThreat").HasColumnName("id_threat");
+                    });
         });
 
         OnModelCreatingPartial(modelBuilder);

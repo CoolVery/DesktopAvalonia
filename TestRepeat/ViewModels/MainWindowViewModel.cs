@@ -26,7 +26,7 @@ namespace TestRepeat.ViewModels
         }
         private void Initialize()
         {
-            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            string userName = Environment.UserName;
             string path = Directory.GetCurrentDirectory();
             using SHA256Managed hash = new SHA256Managed();
             string nameFile = Regex.Replace(Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(userName))), @"[\/:*?""<>|]", "");

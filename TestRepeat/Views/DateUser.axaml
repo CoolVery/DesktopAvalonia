@@ -13,7 +13,9 @@
 			Text="{Binding DateString}"/>
 		<DatePicker
 			SelectedDate="{Binding NewDate}"/>
-		<ComboBox
+		<StackPanel
+			Orientation="Horizontal">
+			<ComboBox
 			ItemsSource="{Binding Genders}"
 			SelectedItem="{Binding UserForPage.IdGenderNavigation}">
 			<ComboBox.ItemTemplate>
@@ -22,6 +24,42 @@
 				</DataTemplate>
 			</ComboBox.ItemTemplate>
 		</ComboBox>
+			<ComboBox
+				ItemsSource="{Binding IdNotThreats}"
+				SelectedItem="{Binding SelectedThreat}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock
+							Text="{Binding Name}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+		</StackPanel>
+		
+		<StackPanel
+			Orientation="Horizontal">
+			<Button
+				Content="Добавить качество"
+				Command="{Binding AddThreat}"
+			/>
+			<Button
+				Content="Удалить качество"
+				Command="{Binding DeleteThreatUser}"
+				/>
+		</StackPanel>
+		<TextBlock
+			Foreground="Red"
+			IsVisible="{Binding IsCanDeleteThreat}"
+			Text="Сначала выделите качество из списка, нажав на него"/>
+		<ListBox ItemsSource="{Binding IdThreats}"
+				 SelectedItem="{Binding SelectedItem}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		
 		<Image
 			Source="{Binding ImgUser}"
 			Width="150"

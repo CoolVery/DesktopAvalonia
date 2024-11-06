@@ -31,11 +31,11 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
             if (SignIn())
             {
                 AuthorizationVMAdditionalMethods.CreateAndWriteWork(login, password);
-
+                
             }
         }
         public bool SignIn() {            
-            Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).FirstOrDefault(user=>user.Login == Login && user.Password == MD5.HashData(Encoding.ASCII.GetBytes(Password)));
+            Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).Include(x=>x.User.IdThreats).FirstOrDefault(user=>user.Login == Login && user.Password == MD5.HashData(Encoding.ASCII.GetBytes(Password)));
             if (user != null) {
                 switch (user.IdRole) {
                     case 1:

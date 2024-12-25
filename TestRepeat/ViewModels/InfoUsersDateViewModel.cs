@@ -54,7 +54,7 @@ namespace TestRepeat.ViewModels
                         IdUserNavigation = user.IdUserNavigation,
                         BirthDate = user.BirthDate,
                         ConvertImgUser = new Bitmap(new MemoryStream(user.ImgUser)),
-                        IdThreats = user.IdThreats
+                        //IdThreats = user.IdThreats
                     };
                 if (user.IdUser == InfoUsersDate.CurrentUser.IdUser)
                 {

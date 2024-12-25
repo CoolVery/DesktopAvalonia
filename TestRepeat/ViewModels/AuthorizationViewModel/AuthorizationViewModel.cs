@@ -8,10 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using TestRepeat.Models;
+using TestRepeat.ViewModels.ApiRequest;
 using TestRepeat.Views;
 
 namespace TestRepeat.ViewModels.AuthorizationViewModel
@@ -27,26 +30,27 @@ namespace TestRepeat.ViewModels.AuthorizationViewModel
             this.password = password;
             SignIn();
         }
-        public void SignInAndWriteFile() {
-            if (SignIn())
+        public async void SignInAndWriteFile() {
+            if (await SignIn())
             {
                 AuthorizationVMAdditionalMethods.CreateAndWriteWork(login, password);
                 
             }
         }
-        public bool SignIn() {            
-            Logined user = MainWindowViewModel.Db_context.Logineds.Include(x=>x.User.IdGenderNavigation).Include(x=>x.User.IdThreats).FirstOrDefault(user=>user.Login == Login && user.Password == MD5.HashData(Encoding.ASCII.GetBytes(Password)));
+        public async Task<bool> SignIn() {
+            Logined user;
+            user = await AuthRequest.AuthInSystem(Login, Password);
             if (user != null) {
                 switch (user.IdRole) {
                     case 1:
                         MainWindowViewModel.Instance.Uc = new DateUser(user.User);
                         break;
                     case 2:
-                        MainWindowViewModel.Instance.Uc = new InfoUsersDate(user.User, MainWindowViewModel.Db_context.Users
-                            .Include(x => x.IdGenderNavigation)
-                            .Include(x => x.IdUserNavigation.IdRoleNavigation)
-                            .Include(x => x.IdThreats)                            
-                            .ToList());
+                        User userFromAPI;
+                        List<User> userList;
+                        userFromAPI = await UserRequest.GetUser(user.Id);
+                        userList = await UserRequest.GetAllUser();
+                        MainWindowViewModel.Instance.Uc = new InfoUsersDate(userFromAPI, userList);
                         break;
                 }
                 return true;

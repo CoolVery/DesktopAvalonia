@@ -10,18 +10,24 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System;
 using TestRepeat.ViewModels.AuthorizationViewModel;
+using System.Net.Http;
 
 namespace TestRepeat.ViewModels
 {
+    
     public partial class MainWindowViewModel : ViewModelBase
     {
         [ObservableProperty] UserControl uc = new Authorization();
         public static MainWindowViewModel Instance;
+        public static HttpClient Client = new HttpClient();
+        
+        
         public static _41pKyklevContext Db_context;
         public MainWindowViewModel()
         {
             Instance = this;
             Db_context = new _41pKyklevContext();
+            Client.BaseAddress = new Uri("http://localhost:5160/");
             Initialize();
         }
         private void Initialize()

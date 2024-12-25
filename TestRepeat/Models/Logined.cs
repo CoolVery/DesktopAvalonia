@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TestRepeat.Models;
 
-public partial class Logined
+public record Logined
 {
     public int Id { get; set; }
 

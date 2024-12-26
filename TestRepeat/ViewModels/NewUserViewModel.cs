@@ -7,9 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using TestRepeat.Models;
+using TestRepeat.ViewModels.ApiRequest;
 using TestRepeat.Views;
 
 namespace TestRepeat.ViewModels
@@ -39,15 +41,19 @@ namespace TestRepeat.ViewModels
             listRole = MainWindowViewModel.Db_context.Roles.ToList();
         }
         
-        public void CreateNewUserAndLogin()
+        public async void CreateNewUserAndLogin()
 		{
+            Models.NewUser newUser = new Models.NewUser();
+            
             NewLogin.Password = MD5.HashData(Encoding.ASCII.GetBytes(PasswordContent));
-            MainWindowViewModel.Db_context.Logineds.Add(NewLogin);
-            MainWindowViewModel.Db_context.SaveChanges();
-            NewUser.IdUser = MainWindowViewModel.Db_context.Logineds.FirstOrDefault(log => log.Login == NewLogin.Login && log.Password == NewLogin.Password).Id;
-            MainWindowViewModel.Db_context.Users.Add(NewUser);
-            MainWindowViewModel.Db_context.SaveChanges();
-            IsUserCreated = true;
+            
+            newUser.User = NewUser;
+            newUser.Logined = NewLogin;
+            HttpResponseMessage response;
+            response = await AddNewRequest.InsertNewUser(newUser);
+
+
+
         }
         public void BackToListUser()
         {

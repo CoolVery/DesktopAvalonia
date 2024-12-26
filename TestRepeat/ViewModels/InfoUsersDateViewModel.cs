@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using TestRepeat.Models;
+using TestRepeat.ViewModels.ApiRequest;
 using TestRepeat.Views;
 
 namespace TestRepeat.ViewModels
@@ -22,9 +25,10 @@ namespace TestRepeat.ViewModels
         {
             listUsers = ConvertList(users);
             copyUsers = listUsers;
+            //listGenders = users.Select(gender => gender.IdGenderNavigation).Distinct().OrderBy(gender => gender.IdGender).ToList();
             listGenders = [
                 new Gender() { Gender1 = "—бросить фильтр", IdGender = 0 },
-                .. users.Select(gender => gender.IdGenderNavigation).Distinct().OrderBy(gender => gender.IdGender).ToList()
+                .. users.Select(gender => gender.IdGenderNavigation).GroupBy(gender => gender.IdGender).Select(group => group.First()).OrderBy(gender => gender.IdGender).ToList()
                 ];
         }
         public void DateSort(int idParam)
@@ -54,7 +58,7 @@ namespace TestRepeat.ViewModels
                         IdUserNavigation = user.IdUserNavigation,
                         BirthDate = user.BirthDate,
                         ConvertImgUser = new Bitmap(new MemoryStream(user.ImgUser)),
-                        //IdThreats = user.IdThreats
+                        IdThreats = user.IdThreats
                     };
                 if (user.IdUser == InfoUsersDate.CurrentUser.IdUser)
                 {
@@ -71,15 +75,20 @@ namespace TestRepeat.ViewModels
         {
             ListUsers = copyUsers;
             if (!string.IsNullOrEmpty(textFolderContent)) ListUsers = ListUsers.Where(user => user.Name.Contains(textFolderContent)).ToList();
-            if (selectedGender != null && selectedGender.IdGender != 0) ListUsers = ListUsers.Where(user => user.IdGenderNavigation == selectedGender).ToList();
+            if (selectedGender != null && selectedGender.IdGender != 0) ListUsers = ListUsers.Where(user => user.IdGenderNavigation.Gender1 == selectedGender.Gender1).ToList();
         }
         public void ChangeUserDate(int idUser)
         {
             User changeableUser = MainWindowViewModel.Db_context.Users.FirstOrDefault(user => user.IdUser == idUser);
             MainWindowViewModel.Instance.Uc = new DateUser(changeableUser);
         }
-        public void DeleteUser(int idUser)
+        public async void DeleteUser(int idUser)
         {
+            HttpResponseMessage response;
+            User userFromAPI;
+            userFromAPI = await UserRequest.GetUser(idUser);
+
+            response = await ApiRequest.UserRequest.DeleteUser(userFromAPI);
             MainWindowViewModel.Db_context
                 .Remove(
                     MainWindowViewModel.Db_context.Users.FirstOrDefault(u => u.IdUser == idUser));
@@ -91,7 +100,7 @@ namespace TestRepeat.ViewModels
         }
         public void AddNewUser()
         {
-            MainWindowViewModel.Instance.Uc = new NewUser();
+            MainWindowViewModel.Instance.Uc = new Views.NewUser();
         }
 
     }

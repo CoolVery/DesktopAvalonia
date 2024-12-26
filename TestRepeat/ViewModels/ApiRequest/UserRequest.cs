@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using TestRepeat.Models;
+using TestRepeat.Views;
 
 namespace TestRepeat.ViewModels.ApiRequest
 {
@@ -27,6 +30,15 @@ namespace TestRepeat.ViewModels.ApiRequest
             string str = await message.Content.ReadAsStringAsync(); // считываем его
             List<User> user = JsonConvert.DeserializeObject<List<User>>(str);
             return user;
+        }
+
+        public static async Task<HttpResponseMessage> DeleteUser(User user)
+        {
+            JsonContent jsonContent = JsonContent.Create(user);
+            string json = string.Format("deleteUser/{0}", jsonContent);
+            HttpResponseMessage message = await MainWindowViewModel.Client.DeleteAsync("deleteUser"); // отправляем запрос к серверу
+            return message;
+
         }
     }
 }

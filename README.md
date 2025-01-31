@@ -1,5 +1,5 @@
-# TestReapit
-![image](https://github.com/user-attachments/assets/5dd47f95-32a0-47cf-a601-90c763ceafee)
+# TestRepeat
+![image](https://github.com/user-attachments/assets/e808e710-3491-49d9-b37e-d52906c76aad)
 # Описание
 Desktop - приложение, визуализирующее данные пользователей программы. Имеет:
 1. Систему авторизации

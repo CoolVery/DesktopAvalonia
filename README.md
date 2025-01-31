@@ -1,4 +1,4 @@
-# DesktopAvalonia
+# TestReapit
 ![image](https://github.com/user-attachments/assets/5dd47f95-32a0-47cf-a601-90c763ceafee)
 # Описание
 Desktop - приложение, визуализирующее данные пользователей программы. Имеет:
